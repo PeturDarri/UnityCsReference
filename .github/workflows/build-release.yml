@@ -37,7 +37,7 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Build
-      run: dotnet build Projects/CSharp/UnityEditor.csproj # also builds UnityEngine as a dependency
+      run: dotnet build Projects/CSharp/UnityEditor.csproj -p:LangVersion=10.0 # also builds UnityEngine as a dependency
 
     - name: Install JetBrains.Refasmer.CliTool
       run: dotnet tool install --global JetBrains.Refasmer.CliTool
