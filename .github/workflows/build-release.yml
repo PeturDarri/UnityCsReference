@@ -47,13 +47,21 @@ jobs:
     - name: Archive stripped .dlls into .tar.gz
       run: tar -czvf release.tar.gz -C stripped UnityEngine.dll UnityEditor.dll
 
-    - name: Create GitHub Release and upload .tar.gz
-      uses: gh-actions/create-release@v1.1.4
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
       with:
         tag_name: ${{ env.TAG_REF }}
         release_name: Release ${{ env.TAG_REF }}
         draft: false
         prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # From the step above
         asset_path: ./release.tar.gz
         asset_name: release.tar.gz
         asset_content_type: application/gzip
